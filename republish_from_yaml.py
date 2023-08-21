@@ -22,5 +22,5 @@ class YamlTransformationRepublisher(TransformationRepublisherBase):
 
         self.broadcasters = [StaticBroadcaster.from_dict(trans_data) for trans_data in data['transformations']]
         for broadcaster in self.broadcasters:
-            broadcaster.metadata.remap_tf_and_tf_static(self.tf, self.tf_static)
+            broadcaster.metadata.remap_tf_and_tf_static(self.tf_static, self.tf)
 
