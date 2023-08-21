@@ -1,0 +1,77 @@
+import subprocess
+from util import *
+
+class Translation:
+    def __init__(self):
+        self.x = 0.0
+        self.y = 0.0
+        self.z = 0.0
+        
+    def set(self, x: str, y: str, z: str):
+        self.x = float(x)
+        self.y = float(y)
+        self.z = float(z)
+        
+    def to_string(self):
+        return str(self.x) + " " + str(self.y) + " " + str(self.z)
+        
+class Rotation:
+    def __init__(self):
+        self.roll = 0.0
+        self.pitch = 0.0
+        self.yaw = 0.0
+        
+    def set(self, x, y, z):
+        self.x = x
+        self.y = y
+        self.z = z
+        
+    def set_from_quaternion(self, x: str, y: str, z: str, w: str):
+        self.roll, self.pitch, self.yaw =  euler_from_quaternion(float(x), float(y), float(z), float(w))
+       
+        
+    def to_string(self):
+        return str(self.roll) + " " + str(self.pitch) + " " + str(self.yaw)
+
+class MetaData:
+    def __init__(self, remap=False):
+        self.parent_link = ""
+        self.child_link = ""
+        
+        self.remap = remap
+        self.cmd_args = "--ros-args --remap tf:={} --remap tf_static:={}"
+        
+    def remap_tf_and_tf_static(self, tf_static = "tf_static", tf="tf"):
+        self.remap = True
+        self.remap_tf = tf
+        self.remap_tf_static = tf_static
+        
+        
+    def to_string(self):
+        msg = self.parent_link + " " + self.child_link + " "
+        if self.remap:
+            msg += self.cmd_args.format(self.remap_tf, self.remap_tf_static)
+        return msg
+
+
+class StaticBroadcasterFactory:
+    
+    def __init__(self, remap=False):
+        self.translation = Translation()
+        self.rotation = Rotation()
+        self.metadata = MetaData(remap)
+    
+        self.running_subprocesses = []
+    
+        self.cmd_format = "ros2 run tf2_ros static_transform_publisher {} {} {}"
+    
+    
+    def start(self):
+        
+        # First the translation then rotation
+        cmd = self.cmd_format.format(self.translation.to_string(), self.rotation.to_string(), self.metadata.to_string())
+        
+        print("Running process:\n{}".format(cmd))
+        # process = subprocess.Popen(['/bin/sh', '-c' , cmd])
+        # self.running_subprocesses.append(process)
+        
