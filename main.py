@@ -3,6 +3,8 @@ import sys
 from republish_rosbag_transformations import TransformatRepublisher
 import os
 
+resources.DEBUG_FLAGS.PRINT_SUBPROCESSES = False
+
 if __name__ == "__main__":
     
     tf_static_topic = ""
@@ -34,9 +36,6 @@ if __name__ == "__main__":
     publisher.dump_csv_data_from_rosbag(bag_file_path, verbose=False)
     publisher.collect_csv_dump()
     publisher.bringup_publishers()
-    
-    import time
-    time.sleep(20)
     
     print("Done")
 

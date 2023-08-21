@@ -31,6 +31,7 @@ class TransformatRepublisher():
 
         broadcasters.rotation.set_from_quaternion(row[group[6]], row[group[7]], row[group[8]], row[group[9]]) 
         broadcasters.start()
+        return broadcasters.running_subprocesses
         
 
     def collect_csv_dump(self):
@@ -56,12 +57,23 @@ class TransformatRepublisher():
         
     def bringup_publishers(self):   
         
+        all_subprocesses = []
+        
         with open(str(self.dump_path), 'r') as csvfile:
             dict_reader = csv.DictReader(csvfile)
             for row in dict_reader:
                 for transform_id in self.tf_static_groups.keys():
                     keys = self.tf_static_groups[transform_id]
-                    self.start_static_tf_publishers(row, keys)
+                    processes = self.start_static_tf_publishers(row, keys)
+                    all_subprocesses.extend(processes)
+                    
+        # TODO waiting is maybe not even necessary for static publishing. Lets have this as an option.
+        for process in all_subprocesses:
+            if process is None:
+                continue
+            
+            process.wait()
+        
                     
         
         

@@ -1,6 +1,12 @@
 import os
 from pathlib import Path
 
+
+class DebugFlags:
+    PRINT_SUBPROCESSES = False
+
+DEBUG_FLAGS = DebugFlags 
+
 def _path_to_project_root(project_name):
     path = os.getcwd()
     while not str(path).endswith(project_name):

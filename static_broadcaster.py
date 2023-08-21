@@ -1,5 +1,6 @@
 import subprocess
 from util import *
+import resources
 
 class Translation:
     def __init__(self):
@@ -68,10 +69,12 @@ class StaticBroadcasterFactory:
     
     def start(self):
         
-        # First the translation then rotation
         cmd = self.cmd_format.format(self.translation.to_string(), self.rotation.to_string(), self.metadata.to_string())
         
-        print("Running process:\n{}".format(cmd))
-        # process = subprocess.Popen(['/bin/sh', '-c' , cmd])
-        # self.running_subprocesses.append(process)
+        if resources.DEBUG_FLAGS.PRINT_SUBPROCESSES:
+            print("Running process:\n{}".format(cmd))
+            return
+
+        process = subprocess.Popen(['/bin/sh', '-c' , cmd])
+        self.running_subprocesses.append(process)
         
