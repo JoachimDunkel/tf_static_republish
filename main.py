@@ -1,10 +1,11 @@
 import resources
 from resources import CmdArgs
 import sys
-from republish_base import create_publisher
+from create_publisher import create_publisher
 import os
 
-resources.DEBUG_FLAGS.PRINT_SUBPROCESSES = True
+resources.DEBUG_FLAGS.PRINT_SUBPROCESSES = False
+resources.DEBUG_FLAGS.VERBOSE_OUTPUT = True
 
 if __name__ == "__main__":
 
@@ -14,6 +15,7 @@ if __name__ == "__main__":
     num_args = len(arguments)
     if num_args < 1 or num_args > 3:
         print(resources.USAGE_INFORMATION)
+        sys.exit(-1)
 
     if num_args == 1:
         "Starting publishers without remapping"

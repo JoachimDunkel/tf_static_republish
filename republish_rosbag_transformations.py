@@ -1,7 +1,7 @@
 import csv
 import subprocess
 import resources
-from resources import CmdArgs
+from resources import CmdArgs, DEBUG_FLAGS
 from republish_base import TransformationRepublisherBase
 from pathlib import Path
 from static_broadcaster import StaticBroadcasterFactory
@@ -10,9 +10,9 @@ import glob
 import grepros
 
 
-def _dump_csv_data_from_rosbag(bag_file_path, verbose=False):
+def _dump_csv_data_from_rosbag(bag_file_path):
     verbose_flag = ""
-    if not verbose:
+    if not DEBUG_FLAGS.VERBOSE_OUTPUT:
         verbose_flag = "--no-console-output"
     grepros_cmd = 'grepros {} --filename {} --topic "*/tf_static" --no-filename --write "{}"'.format(verbose_flag,
                                                                                                      bag_file_path,

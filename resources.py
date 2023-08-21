@@ -4,7 +4,7 @@ from pathlib import Path
 
 class DebugFlags:
     PRINT_SUBPROCESSES = False
-
+    VERBOSE_OUTPUT = False
 
 DEBUG_FLAGS = DebugFlags
 
