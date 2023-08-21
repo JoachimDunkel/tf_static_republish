@@ -5,7 +5,7 @@ from resources import CmdArgs
 def collect_transformations_from_xacro(xacro_file_path):
     print("Collecting transformations from: {}".format(xacro_file_path))
 
-
+#TODO is this easily possible?
 class XacroTransformationRepublisher(TransformationRepublisherBase):
 
     def __init__(self, cmd_args: CmdArgs):

@@ -2,12 +2,9 @@
 
 ## Overview
 
-Easily republish tf_static transformations either from:
+Easily republish tf_static transformations from an existing ros2 - bag file
 
-* An existing ros2 - bag file
-* An .xacro file where the static transformations are defined.
-
-Additionally it is possible  to define topic remappings. 
+Additionally it is possible  to define topic remappings.
 
 ## Setup
 

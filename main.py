@@ -5,7 +5,7 @@ from create_publisher import create_publisher
 import os
 
 resources.DEBUG_FLAGS.PRINT_SUBPROCESSES = False
-resources.DEBUG_FLAGS.VERBOSE_OUTPUT = True
+resources.DEBUG_FLAGS.VERBOSE_OUTPUT = False
 
 if __name__ == "__main__":
 
