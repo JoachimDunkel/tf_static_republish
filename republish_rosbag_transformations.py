@@ -4,7 +4,7 @@ import resources
 from resources import CmdArgs, DEBUG_FLAGS
 from republish_base import TransformationRepublisherBase
 from pathlib import Path
-from static_broadcaster import StaticBroadcasterFactory
+from static_broadcaster import StaticBroadcaster
 import glob
 # Grepros is a cmd line tool. but we still depend on it. therefore we include it here so it is added to the requiremens.txt
 import grepros
@@ -26,7 +26,7 @@ class RosBagTransformationRepublisher(TransformationRepublisherBase):
         super().__init__(cmd_args)
 
     def start_static_tf_publishers(self, row, group):
-        broadcasters = StaticBroadcasterFactory(self.remap)
+        broadcasters = StaticBroadcaster(self.remap)
         broadcasters.metadata.remap_tf_and_tf_static(self.tf_static, self.tf)
         broadcasters.metadata.parent_link = row[group[1]]
         broadcasters.metadata.child_link = row[group[2]]
@@ -34,7 +34,7 @@ class RosBagTransformationRepublisher(TransformationRepublisherBase):
 
         broadcasters.rotation.set_from_quaternion(row[group[6]], row[group[7]], row[group[8]], row[group[9]])
         broadcasters.start()
-        return broadcasters.running_subprocesses
+        return broadcasters.running_subprocess
 
     def collect_csv_dump(self):
 
@@ -63,18 +63,14 @@ class RosBagTransformationRepublisher(TransformationRepublisherBase):
 
     def bring_up_publishers(self):
 
-        all_subprocesses = []
+        self.all_subprocesses = []
 
         with open(str(self.dump_path), 'r') as csvfile:
             dict_reader = csv.DictReader(csvfile)
             for row in dict_reader:
                 for transform_id in self.tf_static_groups.keys():
                     keys = self.tf_static_groups[transform_id]
-                    processes = self.start_static_tf_publishers(row, keys)
-                    all_subprocesses.extend(processes)
+                    proc = self.start_static_tf_publishers(row, keys)
+                    self.all_subprocesses.append(proc)
 
-        for process in all_subprocesses:
-            if process is None:
-                continue
-
-            process.wait()
+        self.wait_for_broadcasters_to_finish()
