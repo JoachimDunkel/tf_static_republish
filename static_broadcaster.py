@@ -34,7 +34,7 @@ class Rotation:
 
     def to_string(self):
         #Why the fuck is ros using yaw pitch roll - format?
-        return str(self.yaw) + " " +  str(self.pitch) + " " +  + str(self.roll) 
+        return str(self.yaw) + " " +  str(self.pitch) + " " +  str(self.roll) 
 
 
 class MetaData:
