@@ -25,15 +25,16 @@ class Rotation:
         self.yaw = 0.0
 
     def set(self, x, y, z):
-        self.x = x
-        self.y = y
-        self.z = z
+        self.roll = x
+        self.pitch = y
+        self.yaw = z
 
     def set_from_quaternion(self, x: str, y: str, z: str, w: str):
         self.roll, self.pitch, self.yaw = euler_from_quaternion(float(x), float(y), float(z), float(w))
 
     def to_string(self):
-        return str(self.roll) + " " + str(self.pitch) + " " + str(self.yaw)
+        #Why the fuck is ros using yaw pitch roll - format?
+        return str(self.yaw) + " " +  str(self.pitch) + " " +  + str(self.roll) 
 
 
 class MetaData:
